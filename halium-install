@@ -43,6 +43,30 @@ do_chroot()
 	do_shell "chroot /cache/system $@"
 }
 
+check_busybox()
+{
+    export device_architecture=$(do_shell "uname -m")
+    export busybox_exists=$(do_shell "if [ -d /sbin/busybox ]; then echo true; else echo false; fi")
+    mkdir busybox
+
+    if [ $busybox_exists = "true" ]; then
+        echo 'Using already installed busybox'
+    else
+        if [ $device_architecture = x86_64 ]; then
+            wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/intel/static/bin/busybox -O busybox/busybox
+        elif [ $device_architecture = armv7l ]; then
+            wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox -O busybox/busybox
+        elif [ $device_architecture = arm64 ]; then
+            wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox -O busybox/busybox
+        fi
+        
+        adb push busybox/busybox /sbin/busybox
+        do_shell "/sbin/busybox --install"
+    fi
+    
+    rm busybox -r
+}
+
 convert_android_img()
 {
 	if file $SYSIMG | grep -v ": Linux rev 1.0 ext4" >/dev/null; then
@@ -170,6 +194,7 @@ if ! adb devices | grep -q recovery; then
 	exit 1
 fi
 
+check_busybox
 check_mounts
 
 WORKDIR=$(mktemp -d /tmp/halium-install.XXXXX)
