@@ -61,7 +61,7 @@ check_busybox()
         
         adb push busybox /sbin/busybox
         do_shell "chmod +x /sbin/busybox"
-        do_shell "/sbin/busybox --install"
+        do_shell "/sbin/busybox --install /sbin/"
     fi
     
     rm busybox
