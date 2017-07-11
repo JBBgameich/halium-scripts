@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 #  Copyright (c) 2014 Canonical
 #
@@ -53,11 +53,7 @@ check_busybox()
 	else
 		if [ $device_architecture = x86_64 ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/intel/static/bin/busybox
-		elif [ $device_architecture = armv7l ]; then
-			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
-		elif [ $device_architecture = aarch64 ]; then
-			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
-		elif [ $device_architecture = armv8l ]; then
+		elif [ $device_architecture = "armv7l" ] || [ $device_architecture = "aarch64" ] || [ $device_architecture = "armv8l" ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
 		fi
 		
