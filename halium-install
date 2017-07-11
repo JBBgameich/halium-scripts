@@ -48,14 +48,16 @@ check_busybox()
 	export device_architecture=$(do_shell "uname -m")
 	export busybox_exists=$(do_shell "if [ -d /sbin/busybox ]; then echo true; else echo false; fi")
 
-	if [ $busybox_exists = "true" ]; then
+	if [ $busybox_exists = true ]; then
 		echo 'Using already installed busybox'
 	else
 		if [ $device_architecture = x86_64 ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/intel/static/bin/busybox
 		elif [ $device_architecture = armv7l ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
-		elif [ $device_architecture = arm64 ]; then
+		elif [ $device_architecture = aarch64 ]; then
+			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
+		elif [ $device_architecture = armv8l ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
 		fi
 		
