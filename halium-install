@@ -46,7 +46,7 @@ do_chroot()
 check_busybox()
 {
 	export device_architecture=$(do_shell "uname -m")
-	export busybox_exists=$(do_shell "if [ -d /sbin/busybox ]; then echo true; else echo false; fi")
+	export busybox_exists=$(do_shell "if [ -f /sbin/busybox ]; then echo true; else echo false; fi")
 
 	if [ $busybox_exists = true ]; then
 		echo 'Using already installed busybox'
@@ -56,13 +56,13 @@ check_busybox()
 		elif [ $device_architecture = "armv7l" ] || [ $device_architecture = "aarch64" ] || [ $device_architecture = "armv8l" ]; then
 			wget https://github.com/meefik/busybox/raw/master/app/src/main/assets/arm/static/bin/busybox
 		fi
-		
+
 		adb push busybox /sbin/busybox
 		do_shell "chmod +x /sbin/busybox"
 		do_shell "/sbin/busybox --install /sbin/"
+
+		rm busybox
 	fi
-	
-	rm busybox
 }
 
 convert_android_img()
