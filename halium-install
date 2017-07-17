@@ -196,11 +196,11 @@ do_shell "[ -e /cache/system/SWAP.swap ] && mv /cache/system/SWAP.swap /data/SWA
 echo "[done]"
 
 echo "Generating SSH host keys on the device"
-do_chroot "rm /etc/dropbear/dropbear_rsa_host_key"
-do_chroot "dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key"
+do_chroot "/bin/rm /etc/dropbear/dropbear_rsa_host_key"
+do_chroot "/usr/bin/dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key"
 
 echo "Changing password needed for root ssh login"
-do_chroot passwd root
+do_chroot "/usr/bin/passwd root"
 
 echo -n "adding android system image to installation ... "
 convert_android_img
